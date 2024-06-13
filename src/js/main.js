@@ -15,7 +15,6 @@ export async function getApi(value, currentPage) {
   }
 }
 
-// Функція для створення розмітки слайдів
 export function createMarkup(data) {
   return data.map(el => 
     `
