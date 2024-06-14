@@ -2,7 +2,7 @@ import axios from 'axios';
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 
-export async function getApi() {
+async function getApi() {
   const BASE_URL = 'https://portfolio-js.b.goit.study/api';
   const END_POINT = '/reviews';
   const url = `${BASE_URL}${END_POINT}`;
@@ -15,12 +15,11 @@ export async function getApi() {
   }
 }
 
-
-export function createMarkup(data) {
+function createMarkup(data) {
   return data.map(el => 
     `
       <div class="swiper-slide">
-        <h1 class="author">${el.author}</h1>
+        <h3 class="author">${el.author}</h3>
         <p class="text">${el.review}</p>
         <img src="${el.avatar_url}" alt="">
       </div>
@@ -36,7 +35,7 @@ async function initSwiper() {
     const swiperWrapper = document.querySelector('.swiper-wrapper');
     swiperWrapper.innerHTML = markup;
     
-    new Swiper('.swiper-container', {
+    const swiper = new Swiper('.swiper-container', {
       loop: true,
       navigation: {
         nextEl: '.swiper-button-next',
@@ -63,8 +62,32 @@ async function initSwiper() {
       centeredSlides: false, 
       slidesPerView: 'auto', 
     });
+    
+    swiper.on('slideChange', function () {
+      updateNavigationButtons(swiper);
+    });
+    
+    updateNavigationButtons(swiper);
   } catch (error) {
     console.error(error);
+  }
+}
+
+function updateNavigationButtons(swiper) {
+  const { isBeginning, isEnd } = swiper;
+  const prevButton = document.querySelector('.swiper-button-prev');
+  const nextButton = document.querySelector('.swiper-button-next');
+  
+  if (isBeginning) {
+    prevButton.classList.add('swiper-button-disabled');
+  } else {
+    prevButton.classList.remove('swiper-button-disabled');
+  }
+  
+  if (isEnd) {
+    nextButton.classList.add('swiper-button-disabled');
+  } else {
+    nextButton.classList.remove('swiper-button-disabled');
   }
 }
 
