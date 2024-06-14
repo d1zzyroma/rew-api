@@ -2,7 +2,7 @@ import axios from 'axios';
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 
-export async function getApi(value, currentPage) {
+export async function getApi() {
   const BASE_URL = 'https://portfolio-js.b.goit.study/api';
   const END_POINT = '/reviews';
   const url = `${BASE_URL}${END_POINT}`;
@@ -14,6 +14,7 @@ export async function getApi(value, currentPage) {
     throw error;
   }
 }
+
 
 export function createMarkup(data) {
   return data.map(el => 
@@ -27,7 +28,6 @@ export function createMarkup(data) {
   ).join('');
 }
 
-
 async function initSwiper() {
   try {
     const data = await getApi();
@@ -36,7 +36,6 @@ async function initSwiper() {
     const swiperWrapper = document.querySelector('.swiper-wrapper');
     swiperWrapper.innerHTML = markup;
     
-
     new Swiper('.swiper-container', {
       loop: true,
       navigation: {
@@ -47,9 +46,25 @@ async function initSwiper() {
         el: '.swiper-pagination',
         clickable: true,
       },
+      breakpoints: {
+        320: { 
+          slidesPerView: 1,
+          spaceBetween: 10
+        },
+        768: { 
+          slidesPerView: 1,
+          spaceBetween: 20
+        },
+        1280: { 
+          slidesPerView: 2,
+          spaceBetween: 30
+        }
+      },
+      centeredSlides: false, 
+      slidesPerView: 'auto', 
     });
   } catch (error) {
-    console.error('Error initializing Swiper', error);
+    console.error(error);
   }
 }
 
